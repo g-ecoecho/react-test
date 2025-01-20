@@ -24,6 +24,18 @@ const connectDB = async () => {
 
 console.log('connectDB function defined');
 
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+console.log('Express app initialized');
+
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 // Execute connectDB to establish the database connection
 (async () => {
     await connectDB();
