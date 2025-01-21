@@ -13,6 +13,9 @@ function Navbar() {
         <li>
           <Link to="/login">Login</Link>
         </li>
+        <li>
+          <Link to="/my-tasks">My Tasks</Link> {/* Add link to My Tasks */}
+        </li>
       </ul>
     </nav>
   )
