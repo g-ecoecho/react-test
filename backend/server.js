@@ -37,11 +37,19 @@ app.post('/api/auth/register', async (req, res) => {
     console.log('POST /api/auth/register called with body:', req.body);
     const { email, password, role } = req.body;
     try {
+        console.log('Hashing password...');
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Password hashed:', hashedPassword);
+        console.log('Creating user in database...');
         const user = await prisma.users.create({
             data: { email, passwordHash: hashedPassword, role },
         });
-        res.json(user);
+        console.log('User created:', user);
+        const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, {
+            expiresIn: '1h',
+        });
+        console.log('Generated token:', token);
+        res.json({ token }); // Return the JWT token
     } catch (err) {
         console.error('Error registering user:', err.message);
         res.status(500).send('Server error');
@@ -52,19 +60,24 @@ app.post('/api/auth/login', async (req, res) => {
     console.log('POST /api/auth/login called with body:', req.body);
     const { email, password } = req.body;
     try {
+        console.log('Finding user in database...');
         const user = await prisma.users.findUnique({
             where: { email },
         });
         if (!user) {
+            console.log('User not found');
             return res.status(404).send('User not found');
         }
+        console.log('Comparing passwords...');
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) {
+            console.log('Invalid credentials');
             return res.status(401).send('Invalid credentials');
         }
         const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
+        console.log('Generated token:', token);
         res.json({ token });
     } catch (err) {
         console.error('Error logging in user:', err.message);
