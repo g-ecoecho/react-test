@@ -1,22 +1,51 @@
+import { useState } from 'react';
+import axios from 'axios';
+
 function SignUp() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Signup form submitted with:', { email, password, role });
+    try {
+      console.log('Sending POST request to http://localhost:3112/api/auth/register');
+      const response = await axios.post('http://localhost:3112/api/auth/register', { email, password, role });
+      console.log('Signup successful:', response.data);
+      setError('');
+      // Redirect or update UI as needed
+    } catch (err) {
+      console.error('Signup error:', err);
+      setError('Error registering user');
+    }
+  };
+
   return (
     <div>
       <h1>Sign Up</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
-          Username:
-          <input type="text" name="username" />
+          Email:
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <br />
         <label>
           Password:
-          <input type="password" name="password" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         <br />
+        <label>
+          Role:
+          <input type="text" value={role} onChange={(e) => setRole(e.target.value)} />
+        </label>
+        <br />
+        {error && <p>{error}</p>}
         <button type="submit">Sign Up</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;

@@ -1,8 +1,11 @@
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import express from 'express';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import cors from 'cors'; // Import cors
+
+dotenv.config();
 
 const app = express();
 const port = 3112;
@@ -10,6 +13,7 @@ const port = 3112;
 const prisma = new PrismaClient();
 
 app.use(express.json());
+app.use(cors()); // Enable CORS
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
