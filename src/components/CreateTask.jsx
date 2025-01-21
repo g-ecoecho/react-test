@@ -9,20 +9,31 @@ function CreateTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('CreateTask form submitted with:', { title, description });
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         setError('No token found. Please log in.');
+        console.log('No token found in localStorage');
         return;
       }
+      const userId = localStorage.getItem('userId');
+      console.log('Retrieved userId from localStorage:', userId);
+      if (!userId) {
+        setError('No user ID found. Please log in.');
+        console.log('No userId found in localStorage');
+        return;
+      }
+      console.log('Sending POST request to http://localhost:3112/api/tasks with:', { title, description, userId });
       const response = await axios.post('http://localhost:3112/api/tasks', 
-        { title, description },
+        { title, description, userId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      console.log('Task creation response:', response.data);
       setSuccess('Task created successfully!');
       setTitle('');
       setDescription('');

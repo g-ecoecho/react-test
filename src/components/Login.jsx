@@ -13,11 +13,13 @@ function Login() {
       console.log('Sending POST request to http://localhost:3112/api/auth/login');
       const response = await axios.post('http://localhost:3112/api/auth/login', { email, password });
       console.log('Login response:', response.data);
-      if (response.data.token) {
+      if (response.data.token && response.data.userId) {
         localStorage.setItem('token', response.data.token); // Store JWT in localStorage
+        localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
         console.log('Token stored in localStorage:', response.data.token);
+        console.log('UserId stored in localStorage:', response.data.userId);
       } else {
-        console.error('Token is undefined');
+        console.error('Token or userId is undefined');
       }
       setError('');
       // Redirect or update UI as needed

@@ -55,7 +55,7 @@ app.post('/api/auth/register', async (req, res) => {
             expiresIn: '1h',
         });
         console.log('Generated token:', token);
-        res.json({ token }); // Return the JWT token
+        res.json({ token, userId: user.id }); // Return the JWT token and userId
     } catch (err) {
         console.error('Error registering user:', err.message);
         res.status(500).send('Server error');
@@ -84,7 +84,7 @@ app.post('/api/auth/login', async (req, res) => {
             expiresIn: '1h',
         });
         console.log('Generated token:', token);
-        res.json({ token });
+        res.json({ token, userId: user.id });
     } catch (err) {
         console.error('Error logging in user:', err.message);
         res.status(500).send('Server error');
@@ -95,7 +95,9 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/tasks', authenticateToken, async (req, res) => {
     console.log('GET /api/tasks called');
     try {
-        const tasks = await prisma.tasks.findMany();
+        const tasks = await prisma.tasks.findMany({
+            where: { userId: req.user.userId },
+        });
         res.json(tasks);
     } catch (err) {
         console.error('Error fetching tasks:', err.message);
@@ -105,11 +107,13 @@ app.get('/api/tasks', authenticateToken, async (req, res) => {
 
 app.post('/api/tasks', authenticateToken, async (req, res) => {
     console.log('POST /api/tasks called with body:', req.body);
-    const { title, description } = req.body;
+    const { title, description, userId } = req.body;
     try {
+        console.log('Creating task in database with:', { title, description, userId });
         const task = await prisma.tasks.create({
-            data: { title, description },
+            data: { title, description, userId: req.user.userId },
         });
+        console.log('Task created:', task);
         res.json(task);
     } catch (err) {
         console.error('Error creating task:', err.message);
@@ -124,7 +128,7 @@ app.get('/api/tasks/:id', authenticateToken, async (req, res) => {
         const task = await prisma.tasks.findUnique({
             where: { id: parseInt(id) },
         });
-        if (!task) {
+        if (!task || task.userId !== req.user.userId) {
             return res.status(404).send('Task not found');
         }
         res.json(task);

@@ -16,12 +16,14 @@ function SignUp() {
       console.log('Signup response:', response.data);
       console.log('Checking if token is present in response...');
       console.log('Full response data:', response.data); // Log the entire response data
-      if (response.data.token) {
+      if (response.data.token && response.data.userId) {
         console.log('Token found:', response.data.token);
         localStorage.setItem('token', response.data.token); // Store JWT in localStorage
+        localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
         console.log('Token stored in localStorage:', response.data.token);
+        console.log('UserId stored in localStorage:', response.data.userId);
       } else {
-        console.error('Token is undefined');
+        console.error('Token or userId is undefined');
       }
       setError('');
       // Redirect or update UI as needed
