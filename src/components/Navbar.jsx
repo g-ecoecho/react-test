@@ -16,6 +16,9 @@ function Navbar() {
         <li>
           <Link to="/my-tasks">My Tasks</Link> {/* Add link to My Tasks */}
         </li>
+        <li>
+          <Link to="/create-task">Create Task</Link>
+        </li>
       </ul>
     </nav>
   )
