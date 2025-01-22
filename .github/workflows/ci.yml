@@ -9,7 +9,8 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Explicitly specify the runner version
+    runs-on: ubuntu-22.04
 
     services:
       postgres:
