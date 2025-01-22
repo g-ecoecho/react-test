@@ -28,7 +28,7 @@ function CreateTask() {
       const userIds = [userId]; // Convert userId to an array
       console.log('Sending POST request to http://localhost:3112/api/tasks with:', { title, description, userIds });
       const response = await axios.post('http://localhost:3112/api/tasks', 
-        { title, description, userIds },
+        { title, description, userIds, status: 'to pend' }, // Ensure status is 'to pend'
         {
           headers: {
             Authorization: `Bearer ${token}`,

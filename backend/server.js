@@ -122,6 +122,7 @@ app.post('/api/tasks', authenticateToken, async (req, res) => {
             data: {
                 title,
                 description,
+                status: 'to pend', // Ensure status is 'to pend'
                 users: {
                     create: userIds.map((userId) => ({
                         user: {
@@ -166,21 +167,29 @@ app.get('/api/tasks/:id', authenticateToken, async (req, res) => {
 app.put('/api/tasks/:id', authenticateToken, async (req, res) => {
     console.log(`PUT /api/tasks/${req.params.id} called with body:`, req.body);
     const { id } = req.params;
-    const { title, description, userIds } = req.body;
+    const { title, description, status, userIds } = req.body;
+    console.log('Request payload:', req.body);
+    console.log('Task ID:', id);
     try {
+        const updateData = {
+            title,
+            description,
+            status, // Update the status of the task
+        };
+
+        if (userIds) {
+            updateData.users = {
+                set: userIds.map((userId) => ({
+                    user: {
+                        connect: { id: parseInt(userId) }
+                    }
+                })),
+            };
+        }
+
         const task = await prisma.tasks.update({
             where: { id: parseInt(id) },
-            data: {
-                title,
-                description,
-                users: {
-                    set: userIds.map((userId) => ({
-                        user: {
-                            connect: { id: parseInt(userId) }
-                        }
-                    })),
-                },
-            },
+            data: updateData,
         });
         console.log('Task updated:', task);
         res.json(task);
