@@ -1,0 +1,66 @@
+.navbar {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center;
+  position: fixed; /* Change from sticky to fixed */
+  top: 0;
+  left: 50%; /* Position the navbar at the center horizontally */
+  transform: translateX(-50%); /* Adjust the position to center the navbar */
+  width: auto; /* Adjust width as needed */
+  background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Remove the navbar-logo styles */
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  margin-left: 20px;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-item {
+  margin: 0 15px;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.navbar-link:hover {
+  color: #0071e3;
+}

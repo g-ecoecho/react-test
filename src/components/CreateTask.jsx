@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import './Form.css'; // Import the CSS file
 
 function CreateTask() {
   const [title, setTitle] = useState('');
@@ -45,28 +46,20 @@ function CreateTask() {
   };
 
   return (
-    <div>
-      <h1>Create Task</h1>
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
-          <input 
-            type="text" 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} 
-            required 
-          />
+    <div className="form-container">
+      <form className="form" onSubmit={handleSubmit}>
+        <h2>Create Task</h2>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter task title" required />
         </div>
-        <div>
-          <label>Description</label>
-          <textarea 
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
-          />
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
+          <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter task description"></textarea>
         </div>
-        <button type="submit">Create Task</button>
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+        <button type="submit" className="form-button">Create Task</button>
       </form>
     </div>
   );

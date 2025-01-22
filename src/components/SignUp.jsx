@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import './Form.css'; // Import the CSS file
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -34,26 +35,23 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </label>
-        <br />
-        <label>
-          Role:
-          <input type="text" value={role} onChange={(e) => setRole(e.target.value)} />
-        </label>
-        <br />
-        {error && <p>{error}</p>}
-        <button type="submit">Sign Up</button>
+    <div className="form-container">
+      <form className="form" onSubmit={handleSubmit}>
+        <h2>Sign Up</h2>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <input type="text" id="role" value={role} onChange={(e) => setRole(e.target.value)} placeholder="Enter your role" />
+        </div>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit" className="form-button">Sign Up</button>
       </form>
     </div>
   );

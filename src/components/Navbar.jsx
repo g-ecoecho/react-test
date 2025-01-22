@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
+import './Navbar.css' // Import the CSS file
 
 function Navbar() {
   return (
-    <nav>
-      <ul>
+    <nav className="navbar">
+      <ul className="navbar-links">
         <li>
           <Link to="/">Home</Link>
         </li>
@@ -14,7 +15,7 @@ function Navbar() {
           <Link to="/login">Login</Link>
         </li>
         <li>
-          <Link to="/my-tasks">My Tasks</Link> {/* Add link to My Tasks */}
+          <Link to="/my-tasks">My Tasks</Link>
         </li>
         <li>
           <Link to="/create-task">Create Task</Link>
