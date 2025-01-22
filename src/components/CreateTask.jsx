@@ -24,9 +24,10 @@ function CreateTask() {
         console.log('No userId found in localStorage');
         return;
       }
-      console.log('Sending POST request to http://localhost:3112/api/tasks with:', { title, description, userId });
+      const userIds = [userId]; // Convert userId to an array
+      console.log('Sending POST request to http://localhost:3112/api/tasks with:', { title, description, userIds });
       const response = await axios.post('http://localhost:3112/api/tasks', 
-        { title, description, userId },
+        { title, description, userIds },
         {
           headers: {
             Authorization: `Bearer ${token}`,
