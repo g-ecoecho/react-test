@@ -34,6 +34,7 @@ const authenticateToken = (req, res, next) => {
             return res.sendStatus(403);
         }
         req.user = user;
+        console.log('Token verified, user:', user);
         next();
     });
 };
@@ -107,9 +108,9 @@ app.get('/api/tasks', authenticateToken, async (req, res) => {
 
 app.post('/api/tasks', authenticateToken, async (req, res) => {
     console.log('POST /api/tasks called with body:', req.body);
-    const { title, description, userId } = req.body;
+    const { title, description } = req.body;
     try {
-        console.log('Creating task in database with:', { title, description, userId });
+        console.log('Creating task in database with:', { title, description, userId: req.user.userId });
         const task = await prisma.tasks.create({
             data: { title, description, userId: req.user.userId },
         });
