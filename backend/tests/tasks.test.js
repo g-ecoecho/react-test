@@ -86,6 +86,7 @@ describe('Tasks API', () => {
     });
 
     afterAll(async () => {
+        await prisma.userTasks.deleteMany(); // Delete related records in UserTasks first
         await prisma.tasks.deleteMany();
         await prisma.users.deleteMany();
         await prisma.$disconnect();
