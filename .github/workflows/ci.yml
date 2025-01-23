@@ -47,7 +47,9 @@ jobs:
             sleep 1
           done
 
-
+      - name: Change ecoecho password
+        run: |
+          psql -U postgres -c "ALTER USER ecoecho WITH PASSWORD 'bingo';"
 
       - name: Verify environment variables
         run: |
