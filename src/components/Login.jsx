@@ -11,7 +11,7 @@ function Login() {
     e.preventDefault();
     console.log('Login form submitted with:', { email, password });
     try {
-      const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+      const backendUrl = 'https://react-test-n0jb.onrender.com'; // Use the provided backend URL
       console.log(`Sending POST request to ${backendUrl}/api/auth/login`);
       const response = await axios.post(`${backendUrl}/api/auth/login`, { email, password });
       console.log('Login response:', response.data);

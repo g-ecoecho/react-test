@@ -9,7 +9,7 @@ function TaskList() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+        const backendUrl = 'https://react-test-n0jb.onrender.com'; // Use the provided backend URL
         console.log(`Sending GET request to ${backendUrl}/api/tasks`);
         const response = await axios.get(`${backendUrl}/api/tasks`, {
           headers: {
