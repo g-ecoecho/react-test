@@ -19,10 +19,10 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_DB: testdb
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: ecoecho
+          POSTGRES_PASSWORD: your_password_here
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U ecoecho"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -45,7 +45,7 @@ jobs:
       # Wait for PostgreSQL to be ready
       - name: Wait for Postgres
         run: |
-          until pg_isready -h localhost -p 5432 -U postgres; do
+          until pg_isready -h localhost -p 5432 -U ecoecho; do
             echo "Waiting for postgres..."
             sleep 1
           done
