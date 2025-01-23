@@ -52,7 +52,7 @@ jobs:
 
       - name: Run critical tests
         env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
-          JWT_SECRET: your_jwt_secret
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: npm test -- --testPathPattern=tests/tasks.test.js
         working-directory: backend
