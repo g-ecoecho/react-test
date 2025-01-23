@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import cors from 'cors'; // Import cors
+import fs from 'fs';
+import https from 'https';
 
 dotenv.config();
 
@@ -235,6 +237,20 @@ app.delete('/api/tasks/:id', authenticateToken, async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Backend server is running at http://localhost:${port}`);
+// Load SSL certificates
+const privateKey = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/private.key', 'utf8'); // Update this path
+const certificate = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/certificate.crt', 'utf8'); // Update this path
+const ca = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/ca_bundle.crt', 'utf8'); // Update this path
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca
+};
+
+// Create HTTPS server
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => {
+    console.log(`Backend server is running at https://localhost:${port}`);
 });
