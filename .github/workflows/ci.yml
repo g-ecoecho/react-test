@@ -46,6 +46,10 @@ jobs:
             sleep 1
           done
 
+      - name: Run Prisma migrations
+        run: npx prisma migrate deploy
+        working-directory: backend
+
       - name: Run critical tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
