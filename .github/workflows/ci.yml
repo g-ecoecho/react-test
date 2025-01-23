@@ -47,6 +47,10 @@ jobs:
             sleep 1
           done
 
+      - name: Create ecoecho user
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE USER ecoecho WITH PASSWORD 'bingo';"
+
       - name: Change ecoecho password
         run: |
           PGPASSWORD=postgres psql -h localhost -U postgres -c "ALTER USER ecoecho WITH PASSWORD 'bingo';"
