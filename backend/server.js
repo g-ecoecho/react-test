@@ -20,7 +20,7 @@ const prisma = new PrismaClient({
 
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://192.168.1.101:5173'], // Add your network address here
+  origin: ['https://react-test-n0jb.onrender.com'], // Allow requests only from your production frontend
 })); // Enable CORS
 
 app.get('/', (req, res) => {
