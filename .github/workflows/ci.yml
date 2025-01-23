@@ -17,6 +17,10 @@ jobs:
         image: postgres:latest
         ports:
           - 5432:5432
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s
