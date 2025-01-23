@@ -12,8 +12,9 @@ function SignUp() {
     e.preventDefault();
     console.log('Signup form submitted with:', { email, password, role });
     try {
-      console.log(`Sending POST request to ${import.meta.env.VITE_API_BASE_URL}/api/auth/register`);
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, { email, password, role });
+      const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+      console.log(`Sending POST request to ${backendUrl}/api/auth/register`);
+      const response = await axios.post(`${backendUrl}/api/auth/register`, { email, password, role });
       console.log('Signup response:', response.data);
       if (response.data.token && response.data.userId) {
         localStorage.setItem('token', response.data.token); // Store JWT in localStorage

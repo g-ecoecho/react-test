@@ -9,16 +9,11 @@ function TaskList() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setError('No token found. Please log in.');
-          console.log('No token found in localStorage');
-          return;
-        }
-        console.log(`Sending GET request to ${import.meta.env.VITE_API_BASE_URL}/api/tasks`);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/tasks`, {
+        const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+        console.log(`Sending GET request to ${backendUrl}/api/tasks`);
+        const response = await axios.get(`${backendUrl}/api/tasks`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
         console.log('Tasks fetched:', response.data);

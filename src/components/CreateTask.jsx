@@ -26,8 +26,9 @@ function CreateTask() {
         return;
       }
       const userIds = [userId]; // Convert userId to an array
-      console.log(`Sending POST request to ${import.meta.env.VITE_API_BASE_URL}/api/tasks with:`, { title, description, userIds });
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/tasks`, 
+      const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+      console.log(`Sending POST request to ${backendUrl}/api/tasks with:`, { title, description, userIds });
+      const response = await axios.post(`${backendUrl}/api/tasks`, 
         { title, description, userIds, status: 'to pend' }, // Ensure status is 'to pend'
         {
           headers: {

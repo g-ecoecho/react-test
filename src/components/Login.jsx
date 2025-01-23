@@ -11,8 +11,9 @@ function Login() {
     e.preventDefault();
     console.log('Login form submitted with:', { email, password });
     try {
-      console.log(`Sending POST request to ${import.meta.env.VITE_API_BASE_URL}/api/auth/login`);
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, { email, password });
+      const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+      console.log(`Sending POST request to ${backendUrl}/api/auth/login`);
+      const response = await axios.post(`${backendUrl}/api/auth/login`, { email, password });
       console.log('Login response:', response.data);
       if (response.data.token && response.data.userId) {
         localStorage.setItem('token', response.data.token); // Store JWT in localStorage
