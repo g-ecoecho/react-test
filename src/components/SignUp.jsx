@@ -12,7 +12,7 @@ function SignUp() {
     e.preventDefault();
     console.log('Signup form submitted with:', { email, password, role });
     try {
-      const backendUrl = 'http://localhost:3112'; // Replace with your actual backend URL
+      const backendUrl = 'http://192.168.1.101:3112'; // Replace with your actual backend network address
       console.log(`Sending POST request to ${backendUrl}/api/auth/register`);
       const response = await axios.post(`${backendUrl}/api/auth/register`, { email, password, role });
       console.log('Signup response:', response.data);

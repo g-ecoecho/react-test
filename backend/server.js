@@ -13,7 +13,9 @@ const port = 3112;
 const prisma = new PrismaClient();
 
 app.use(express.json());
-app.use(cors()); // Enable CORS
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://192.168.1.101:5173'], // Add your network address here
+})); // Enable CORS
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -44,6 +46,14 @@ app.post('/api/auth/register', async (req, res) => {
     console.log('POST /api/auth/register called with body:', req.body);
     const { email, password, role } = req.body;
     try {
+        console.log('Checking if email already exists...');
+        const existingUser = await prisma.users.findUnique({
+            where: { email },
+        });
+        if (existingUser) {
+            console.log('Email already exists');
+            return res.status(400).send('Email already exists');
+        }
         console.log('Hashing password...');
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log('Password hashed:', hashedPassword);
