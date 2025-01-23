@@ -47,6 +47,8 @@ jobs:
           done
 
       - name: Run Prisma migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
         working-directory: backend
 
