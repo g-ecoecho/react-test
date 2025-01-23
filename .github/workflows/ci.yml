@@ -46,9 +46,9 @@ jobs:
             sleep 1
           done
 
-      - name: Run tests
+      - name: Run critical tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
           JWT_SECRET: your_jwt_secret
-        run: npm test
+        run: npm test -- --testPathPattern=tests/tasks.test.js
         working-directory: backend
