@@ -240,12 +240,18 @@ app.delete('/api/tasks/:id', authenticateToken, async (req, res) => {
 // Load SSL certificates
 const privateKey = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/private.key', 'utf8'); // Update this path
 const certificate = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/certificate.crt', 'utf8'); // Update this path
-const ca = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/ca_bundle.crt', 'utf8'); // Update this path
+
+let ca;
+try {
+  ca = fs.readFileSync('/Users/ecoecho/Desktop/react-test-local/react-test/backend/ca_bundle.crt', 'utf8'); // Update this path
+} catch (err) {
+  console.warn('CA bundle not found, proceeding without it');
+}
 
 const credentials = {
   key: privateKey,
   cert: certificate,
-  ca: ca
+  ...(ca && { ca })
 };
 
 // Create HTTPS server
