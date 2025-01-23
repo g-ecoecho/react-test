@@ -6,5 +6,13 @@ export default defineConfig({
   server: {
     host: true,       // Exposes to the network
     port: process.env.PORT || 5173 // Default to 5173 if no PORT is set
-  }
+  },
+  build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+    },
+  },
 });
