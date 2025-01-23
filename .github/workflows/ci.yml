@@ -23,7 +23,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
-          --health-cmd="pg_isready -U ecoecho"
+          --health-cmd="pg_isready -U postgres"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -42,34 +42,34 @@ jobs:
 
       - name: Wait for Postgres
         run: |
-          until pg_isready -h localhost -p 5432 -U ecoecho; do
+          until pg_isready -h localhost -p 5432 -U postgres; do
             echo "Waiting for postgres..."
             sleep 1
           done
 
+
+
       - name: Verify environment variables
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
+          echo "DATABASE_URL=postgresql://ecoecho:bingo@localhost:5432/ecoecho"
+          echo "JWT_SECRET=your_jwt_secret_here"
 
       - name: Print DATABASE_URL
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
+        run: echo "DATABASE_URL=postgresql://ecoecho:bingo@localhost:5432/ecoecho"
 
       - name: Test database connection
         run: |
-          psql ${{ secrets.DATABASE_URL }} -c '\l'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          psql postgresql://ecoecho:bingo@localhost:5432/ecoecho -c '\l'
 
       - name: Run Prisma migrations
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: postgresql://ecoecho:bingo@localhost:5432/ecoecho
         run: npx prisma migrate deploy
         working-directory: backend
 
       - name: Run critical tests
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DATABASE_URL: postgresql://ecoecho:bingo@localhost:5432/ecoecho
+          JWT_SECRET: your_jwt_secret_here
         run: npm test -- --testPathPattern=tests/tasks.test.js
         working-directory: backend
