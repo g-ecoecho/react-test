@@ -3,13 +3,14 @@ name: CI
 on:
   push:
     branches:
-      - main         # Trigger on pushes to the `main` branch
-      - 'feature/*'  # Trigger on pushes to any branch matching the `feature/` pattern
-  pull_request:       # Trigger on pull requests targeting the `main` branch
+      - main
+      - 'feature/*'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
-    # Explicitly specify the runner version
     runs-on: ubuntu-22.04
 
     services:
@@ -19,8 +20,8 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_DB: testdb
-          POSTGRES_USER: ecoecho
-          POSTGRES_PASSWORD: your_password_here
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd="pg_isready -U ecoecho"
           --health-interval=10s
@@ -28,21 +29,17 @@ jobs:
           --health-retries=5
 
     steps:
-      # Checkout the repository
       - uses: actions/checkout@v3
 
-      # Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.18.0' # Use a compatible version of Node.js
+          node-version: '18.18.0'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
         working-directory: backend
 
-      # Wait for PostgreSQL to be ready
       - name: Wait for Postgres
         run: |
           until pg_isready -h localhost -p 5432 -U ecoecho; do
@@ -50,20 +47,26 @@ jobs:
             sleep 1
           done
 
-      # Verify environment variables
       - name: Verify environment variables
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
 
-      # Run Prisma migrations
+      - name: Print DATABASE_URL
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
+
+      - name: Test database connection
+        run: |
+          psql ${{ secrets.DATABASE_URL }} -c '\l'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Run Prisma migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
         working-directory: backend
 
-      # Run critical tests
       - name: Run critical tests
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
